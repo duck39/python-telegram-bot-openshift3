@@ -1,3 +1,4 @@
+import requests
 import logging
 from queue import Queue
 from threading import Thread
@@ -25,6 +26,17 @@ def echo(bot, update):
 def error(bot, update, error):
     logger.warning('Update "%s" caused error "%s"' % (update, error))
 
+def generatePDF(bot, update, product):
+	r = requests.post('https://survey.fast-insight.com/mcd/it/voucher.php', data={'browser':'undefined','browserLANG':'undefined','deviceAPP_ID':'undefined','deviceType':'undefined','identifier':'undefined','incentivetype':str(product),'IP':'undefined','lang':'it','orderpoint':'1','platform':'undefined','promo':'','store_id':'0123','surveyform':'1224','transaction':'undefined','version':'undefined'}, headers={'User-Agent':'Mozilla/5.0 (Windows NT 10.0; WOW64; rv:56.0) Gecko/20100101 Firefox/56.0'}, cookies={'VOC_id':'de_5aa55c6a535c3'})
+	return r.text.split("' download target='_blank'")[0].split("<a href='")[1]
+
+if __name__ == '__main__':
+	print('- MCDonalds Voucher Generator -\n@ created by TheFamilyTeam @\n- Join @TFChat -\n\n1) Cheeseburger\n2) Coffee\n')
+	product = input('Select: ')
+	print('+ Generating voucher...')
+	print('+ Done: ' + generatePDF(product))
+	input()
+  
 # Write your handlers here
 
 
